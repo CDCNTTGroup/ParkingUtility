@@ -60,3 +60,20 @@ def display_customer_img(dir_):
     label2.image = img
     
     label2.place(x=550,y=175, width = 300, height=300)
+
+def check_existingnumberplate(number_plate):
+    cnx = mysql.connector.connect(user='root', password='root',
+                              host='127.0.0.1',
+                              database='parking')
+    cursor = cnx.cursor()
+    query = ("SELECT Image FROM LicensePlates WHERE NumberPlate = %s")
+    cursor.execute(query, (number_plate,))
+    myresult = cursor.fetchall()
+    if myresult is not None:
+        if len(myresult) > 0:
+            print(myresult[0])
+            display_customer_img(''.join(myresult[0]))
+            remove_btn['state']='normal'
+            return 1
+        remove_btn['state']='disable'
+    return 0
