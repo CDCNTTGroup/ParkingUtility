@@ -81,39 +81,3 @@ def display_customer_img(dir_):
     label2.image = img
 
     label2.place(x=550, y=175, width=300, height=300)
-    
-def upload_file_entrance():
-    global label1
-    global customer_inform 
-    customer_inform = []
-    save_btn['state']='disable'
-    file = askopenfile(mode='r', filetypes=[('Image Files',  ['.jpeg', '.jpg', '.png', '.gif',
-                                                       '.tiff', '.tif', '.bmp'])])
-    if not file:
-            return None
-        
-    dir_ = file.name
-    result = readnumberplate(dir_)
-    
-    customer_inform.append(result) 
-    
-    img_ =Image.open(dir_)
-    img = ImageTk.PhotoImage(img_)
-    label1 = Label(image=img)
-    label1.image = img
-    label1.place(x=50,y=175, width = 300, height=300)
-    
-    label2=Label(app, text="Number plate:"+result, font='Helvetica 18 bold')
-    label2.place(x=50,y=500)
-    
-    existing = check_existingnumberplate(result)
-    if existing == 1: 
-        label_existing_check = Label(app, text='This number plate already exists',fg='red')
-    else:
-        label_existing_check = Label(app, text='Complete parking form with customer image',fg='red')
-    
-    label_existing_check.place(x=50,y=530)
-        
-	
-    
-    return 
