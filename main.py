@@ -29,3 +29,17 @@ def remove_record():
     label1.config(image='')
     label2.config(image='')
     return
+
+
+
+def display_customer_img(dir_):
+    global label2
+    img_ =cv2.imread(dir_)
+    RGB_img = cv2.cvtColor(img_, cv2.COLOR_BGR2RGB)
+    img_=image_resize(RGB_img,width=300)
+    img = ImageTk.PhotoImage(Image.fromarray(img_))
+    
+    label2.config(image=img)
+    label2.image = img
+    
+    label2.place(x=550,y=175, width = 300, height=300)
