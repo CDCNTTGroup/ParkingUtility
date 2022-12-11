@@ -11,6 +11,7 @@ import easyocr
 import mysql.connector
 from PIL import ImageTk,Image
 
+
 customer_inform=[]
 
 def remove_record():
@@ -29,26 +30,6 @@ def remove_record():
     label1.config(image='')
     label2.config(image='')
     return
-
-    
-def save_record():
-    global label1,label2
-    if len(customer_inform)!=1:
-        return
-    cnx = mysql.connector.connect(user='root', password='root',
-                              host='127.0.0.1',
-                              database='parking')
-    cursor = cnx.cursor()
-    add_plate = ("INSERT INTO LicensePlates "
-               "(NumberPlates, Images) "
-               "VALUES (%s, %s)")
-    data_plate = (customer_inform[0],customer_inform[1])
-
-    cursor.execute(add_plate, data_plate)
-    cnx.commit()
-
-    return
-
 def display_customer_img(dir_):
     global label2
     img_ =cv2.imread(dir_)
@@ -60,6 +41,56 @@ def display_customer_img(dir_):
     label2.image = img
     
     label2.place(x=550,y=175, width = 300, height=300)
+    
+def save_record():
+    global label1,label2
+    if len(customer_inform)!=2:
+        return
+    cnx = mysql.connector.connect(user='root', password='root',
+                              host='127.0.0.1',
+                              database='parking')
+    cursor = cnx.cursor()
+    add_plate = ("INSERT INTO LicensePlates "
+               "(NumberPlate, Image) "
+               "VALUES (%s, %s)")
+    data_plate = (customer_inform[0],customer_inform[1])
+
+    cursor.execute(add_plate, data_plate)
+    cnx.commit()
+    
+    label1.config(image='')
+    label2.config(image='')
+    return
+def image_resize(image, width = None, height = None, inter = cv2.INTER_AREA):
+    # initialize the dimensions of the image to be resized and
+    # grab the image size
+    dim = None
+    (h, w) = image.shape[:2]
+
+    # if both the width and height are None, then return the
+    # original image
+    if width is None and height is None:
+        return image
+
+    # check to see if the width is None
+    if width is None:
+        # calculate the ratio of the height and construct the
+        # dimensions
+        r = height / float(h)
+        dim = (int(w * r), height)
+
+    # otherwise, the height is None
+    else:
+        # calculate the ratio of the width and construct the
+        # dimensions
+        r = width / float(w)
+        dim = (width, int(h * r))
+
+    # resize the image
+    resized = cv2.resize(image, dim, interpolation = inter)
+
+    # return the resized image
+    return resized
 
 def check_existingnumberplate(number_plate):
     cnx = mysql.connector.connect(user='root', password='root',
@@ -111,8 +142,7 @@ def readnumberplate(img_path):
     
     t=result[0][1]+result[1][1]
     return t
-
-
+    
 def upload_file_entrance():
     global label1
     global customer_inform 
@@ -149,7 +179,6 @@ def upload_file_entrance():
     
     return 
 
-
 def upload_customerfile_entrance():
     global customer_inform
     if len(customer_inform)==0:
@@ -183,3 +212,53 @@ def upload_customerfile_entrance():
         
         
     return
+
+app = Tk()
+
+app.geometry("894x900")
+app.configure(bg = "#FFFFFF")
+canvas = Canvas(
+    app,
+    bg = "#FFFFFF",
+    height = 600,
+    width = 900,
+    bd = 0,
+    highlightthickness = 0,
+    relief = "ridge"
+)
+label1 = Label(image='')
+label2= Label(image='')
+file_upload_btn = Button(app, text="Upload Number Plate Image",
+                                 command=lambda: upload_file_entrance())
+file_upload_btn.place(
+    x=50,
+    y=100,
+    width=200.0,
+    height=40.0
+)
+
+file_upload_btn_2 = Button(app, text="Upload Customer Image",
+                                 command=lambda: upload_customerfile_entrance())
+file_upload_btn_2.place(
+    x=550,
+    y=100,
+    width=200.0,
+    height=40.0
+)
+save_btn= Button(app, text="Save",
+                                    command=lambda: save_record())
+save_btn.place(
+            x=550,
+            y=575,
+            width=150.0,
+            height=56.0
+        )
+save_btn['state']="disable"
+
+remove_btn = Button(app, text="Remove Number Plate", command=lambda: remove_record())
+remove_btn.place(x=190,y=575,width=150,height=56)
+remove_btn['state']="disable"
+
+
+app.resizable(False, False)
+app.mainloop()
