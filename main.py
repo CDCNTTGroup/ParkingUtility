@@ -148,3 +148,38 @@ def upload_file_entrance():
 	
     
     return 
+
+
+def upload_customerfile_entrance():
+    global customer_inform
+    if len(customer_inform)==0:
+        return
+    if len(customer_inform)==1: 
+        save_btn['state']='disable'
+        
+    file = askopenfile(mode='r', filetypes=[('Image Files',  ['.jpeg', '.jpg', '.png', '.gif',
+                                                       '.tiff', '.tif', '.bmp'])])
+    if not file:
+            return None
+    dir_ = file.name
+    
+    customer_inform.append(dir_)
+    display_customer_img(dir_)
+    # img_ =Image.open(dir_)
+    
+    # img_ =cv2.imread(dir_)
+    # RGB_img = cv2.cvtColor(img_, cv2.COLOR_BGR2RGB)
+    # img_=image_resize(RGB_img,width=300)
+    # img = ImageTk.PhotoImage(Image.fromarray(img_))
+    
+    # label1 = Label(image=img)
+    # label1.image = img
+    
+    # label1.place(x=550,y=175, width = 300, height=300)
+    print(customer_inform)
+    
+    if len(customer_inform)==2:
+        save_btn['state']='normal'
+        
+        
+    return
