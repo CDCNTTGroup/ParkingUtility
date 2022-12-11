@@ -30,7 +30,24 @@ def remove_record():
     label2.config(image='')
     return
 
+    
+def save_record():
+    global label1,label2
+    if len(customer_inform)!=1:
+        return
+    cnx = mysql.connector.connect(user='root', password='root',
+                              host='127.0.0.1',
+                              database='parking')
+    cursor = cnx.cursor()
+    add_plate = ("INSERT INTO LicensePlates "
+               "(NumberPlates, Images) "
+               "VALUES (%s, %s)")
+    data_plate = (customer_inform[0],customer_inform[1])
 
+    cursor.execute(add_plate, data_plate)
+    cnx.commit()
+
+    return
 
 def display_customer_img(dir_):
     global label2
