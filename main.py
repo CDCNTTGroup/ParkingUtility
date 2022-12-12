@@ -43,7 +43,7 @@ def display_customer_img(dir_):
     label2.place(x=550,y=175, width = 300, height=300)
     
 def save_record():
-    global label1,label2
+    global label1,label2, label_existing_check,label_number_plate
     if len(customer_inform)!=2:
         return
     cnx = mysql.connector.connect(user='root', password='root',
@@ -60,6 +60,8 @@ def save_record():
     
     label1.config(image='')
     label2.config(image='')
+    label_existing_check.config(text='')
+    label_number_plate.config(text='')
     return
 def image_resize(image, width = None, height = None, inter = cv2.INTER_AREA):
     # initialize the dimensions of the image to be resized and
