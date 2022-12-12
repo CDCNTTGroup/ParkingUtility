@@ -1,8 +1,7 @@
 # ParkingUtility
 # XE ĐI VÀO
 + Thêm ảnh number plate(biển số xe, bên trái) => nhận diện biển số xe.
-+ Xe đi vào thì trong db sẽ chưa có biển này, thêm ảnh customer và nhấn Allow to go in => biển số và ảnh của customer. 
-sẽ được lưu và db để khi xe đi ra thì lấy ra kiểm tra.
++ Xe đi vào thì trong db sẽ chưa có biển này, thêm ảnh customer và nhấn Allow to go in => biển số và ảnh của customer sẽ được lưu và db để khi xe đi ra thì lấy ra kiểm tra.
 
 # XE ĐI RA
 + Thêm ảnh Number plate (biển số xe, bên trái) => nhận diện biển số xe.
